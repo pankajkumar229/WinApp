@@ -1,0 +1,168 @@
+Building FFMPEG on Linux for Windows using MinGW
+------------------------------------------------
+On an ubuntu 64 bit machine (make sure it is natty so that all dependencies are present)
+
+#!/bin/bash
+sudo apt-get install subversion yasm bison flex libgmp3-dev libmpfr-dev libmpc-dev \
+texinfo gcc-4.5-source binutils-source
+mkdir src
+cd src
+tar xvJf /usr/src/binutils/binutils-2.20.51.tar.xz
+mv binutils* binutils
+tar xvJf /usr/src/gcc-4.5/gcc-4.5.1.tar.xz
+mv gcc* gcc
+svn co https://mingw-w64.svn.sourceforge.net/svnroot/mingw-w64/trunk mingw
+svn co svn://svn.ffmpeg.org/ffmpeg/trunk ffmpeg
+cd ..
+mkdir build
+cd build
+mkdir binutils
+mkdir gcc
+mkdir mingw-headers
+mkdir mingw-crt
+mkdir ffmpeg
+cd binutils
+../../src/binutils/configure --target=x86_64-w64-mingw32 --disable-multilib
+make
+sudo make install
+cd ../mingw-headers
+../../src/mingw/mingw-w64-headers/configure --host=x86_64-w64-mingw32
+make
+sudo make install
+sudo ln -s /usr/local/x86_64-w64-mingw32 /usr/local/mingw
+sudo mkdir -p /usr/local/x86_64-w64-mingw32/lib
+sudo ln -s /usr/local/x86_64-w64-mingw32/lib /usr/local/x86_64-w64-mingw32/lib64
+cd ../gcc
+../../src/gcc/configure --target=x86_64-w64-mingw32 --disable-multilib
+make all-gcc
+sudo make install-gcc
+cd ../mingw-crt
+../../src/mingw/mingw-w64-crt/configure --host=x86_64-w64-mingw32
+make
+sudo make install
+cd ../gcc
+make
+sudo make install
+cd ../ffmpeg
+../../src/ffmpeg/configure --disable-dxva2 --cross-prefix=x86_64-w64-mingw32- \
+--extra-cflags='-Dstrtod=__strtod' --arch=x86_64 --target-os=mingw32
+make
+
+
+Copying Over and building a Metro project out of FFMPEG 64 bit build.
+--------------------------------------------------------------------
+1. In the Win8 Developer preview, build a new Metro component dll WinApp and project named FFMpeg in directory <Base>\source. Make sure in Configuration manager that the target platform is x64.
+2. Copy over the ffmpeg source (src/ffmpeg) from the linux machine as ffmpeg_src into <Base>\source\WinApp\FFMpeg
+3. Copy over the ffmpeg build (build/ffmpeg) directory from the linux machine as ffmpeg_build into <Base>\source\WinApp\FFMpeg
+3.5. Copy over the following libraries from the linux build into the project
+build/gcc/gcc/libgcc.a -> <Base>\source\WinApp\FFMpeg\ffmpeg_build
+build/mingw-crt/lib64/libmingw32.a -> <Base>\source\WinApp\FFMpeg\ffmpeg_build
+build/mingw-crt/lib64/libmingwex.a -> <Base>\source\WinApp\FFMpeg\ffmpeg_build
+build/mingw-crt/lib64/libwsock32.a -> <Base>\source\WinApp\FFMpeg\ffmpeg_build
+
+4. Add the following into FFMpeg project's linker input directories (Properties -> Conf Properties -> VC++ directories -> Library Directories:
+ C:\Users\pankajk81\source\WinApp\FFMpeg\ffmpeg_build\libavcore;
+ C:\Users\pankajk81\source\WinApp\FFMpeg\ffmpeg_build\libavdevice;
+ C:\Users\pankajk81\source\WinApp\FFMpeg\ffmpeg_build\libavcodec;
+ C:\Users\pankajk81\source\WinApp\FFMpeg\ffmpeg_build\libavfilter;
+ C:\Users\pankajk81\source\WinApp\FFMpeg\ffmpeg_build\libswscale;
+ C:\Users\pankajk81\source\WinApp\FFMpeg\ffmpeg_build\libpostproc;
+ C:\Users\pankajk81\source\WinApp\FFMpeg\ffmpeg_build\libavutil;
+ C:\Users\pankajk81\source\WinApp\FFMpeg\ffmpeg_build\libavformat;
+  C:\Users\pankajk81\source\WinApp\FFMpeg\ffmpeg_build\;$(LibraryPath)
+5. Add the following to the FFMpeg project's include directories (Properties -> Configuration Properties->VC++ directories -> Include Directories:
+ C:\Users\pankajk81\source\WinApp\FFMpeg\ffmpeg_build;
+ C:\Users\pankajk81\source\WinApp\FFMpeg\ffmpeg_src;
+ C:\Users\pankajk81\source\WinApp\FFMpeg\ffmpeg_src\libavutil;
+ C:\Users\pankajk81\source\WinApp\FFMpeg\ffmpeg_src\libavcore;
+ C:\Users\pankajk81\source\WinApp\FFMpeg\ffmpeg_src\libavformat;
+ C:\Users\pankajk81\source\WinApp\FFMpeg\ffmpeg_src\libavcodec;$(IncludePath)
+
+6. 
+Include the following libraries in the FFMPeg project (Properties->Configuration Properties->Linker->Input->Additional Deps) :
+libavcore.a
+libavcodec.a
+libavformat.a
+libavdevice.a
+libgcc.a
+libwsock32.a
+libavfilter.a
+libavutil.a
+libswscale.a
+libmingwex.a
+
+7. Replace the contents of WinRTComponent.h with the following code that accesses ffmpeg routines.
+ <code>
+#pragma once
+using namespace Windows::Foundation;
+#ifndef __STDC_CONSTANT_MACROS
+#  define __STDC_CONSTANT_MACROS
+#endif
+
+extern "C" {
+#include <avcodec.h>
+#include <avformat.h>
+}
+
+namespace FFMpeg
+{
+	// Activatable class.
+    public ref class LangSample sealed
+    {
+
+    public:
+        LangSample()
+        {    
+			av_register_all();
+		    AVFormatContext *pFormatCtx;
+
+		    //open video file
+		    if (av_open_input_file(&pFormatCtx, "C:\\test\\centaur_1.mpeg", NULL, 0, NULL) != 0)
+			    return ;
+
+            // Retrieve stream information
+            if(av_find_stream_info(pFormatCtx)<0)
+                return ; // Couldn't find stream information  
+
+        }
+
+		int testMePlease()
+	    {
+		   return 0;
+	    }
+       };
+}
+// WinRTComponent.h
+ </code>
+7. Remove all function definitions from WinRTComponent.cpp
+Replace the content with the following:
+
+<code>
+// WinRTComponent.cpp
+
+#include "pch.h"
+#include "WinRTComponent.h"
+
+using namespace FFMpeg;
+
+extern "C" int mingw_app_type = 0;
+extern "C" void __mingw_raise_matherr (int typ, const char *name, double a1, double a2,
+      double rslt)
+{
+}
+
+typedef int HMODULE;
+extern "C" HMODULE __mingw_get_msvcrt_handle(void)
+{
+ return 0;
+}
+
+This introduces these three symbols that are defined in libmingw32.a but including libmingw32.a leads to other symbol errors. These two functions never seem to be called though.
+
+Make a new CS App project
+-------------------------
+1. Make a new CS app project called WinApp (inside the WinApp folder and in the WinApp Solution)
+2. Make sure that the configuration manager compiles it in x64 and set it as the startup project
+3. Add a reference to C:\Users\pankajk81\source\WinApp\Debug\FFMpeg\FFMpeg.winmd 
+4. In App.xaml.cs , add a "using FFMpeg" declaration and call the "LangSample ls = new LangSample()" in the App() constructor.
+
