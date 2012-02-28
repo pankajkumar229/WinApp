@@ -1,0 +1,1 @@
+config:x86:x86_64:generic:mingw32:gcc 4.5.2 (GCC):--disable-dxva2 --cross-prefix=x86_64-w64-mingw32- --extra-cflags='-Dstrtod=__strtod' --arch=x86_64 --target-os=mingw32

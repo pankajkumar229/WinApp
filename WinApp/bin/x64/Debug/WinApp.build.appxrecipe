@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Machine>PANKAJ-DEV</Machine>
+    <WindowsUser>pankajk81</WindowsUser>
+    <SolutionConfiguration>Debug|x64</SolutionConfiguration>
+  </PropertyGroup>
+  <ItemGroup>
+    <AppXManifest Include="C:\Users\pankajk81\source\WinApp\WinApp\bin\x64\Debug\AppxManifest.xml">
+      <PackagePath>AppxManifest.xml</PackagePath>
+      <Modified>2012-02-28T14:28:22.541</Modified>
+    </AppXManifest>
+  </ItemGroup>
+  <ItemGroup>
+    <AppXPackagedFile Include="C:\Users\pankajk81\source\WinApp\Debug\FFMpeg\FFMpeg.pdb">
+      <PackagePath>FFMpeg.pdb</PackagePath>
+      <Modified>2012-02-28T13:11:22.839</Modified>
+    </AppXPackagedFile>
+    <AppXPackagedFile Include="C:\Users\pankajk81\source\WinApp\Debug\FFMpeg\FFMpeg.winmd">
+      <PackagePath>FFMpeg.winmd</PackagePath>
+      <Modified>2012-02-28T13:11:22.828</Modified>
+    </AppXPackagedFile>
+    <AppXPackagedFile Include="C:\Users\pankajk81\source\WinApp\WinApp\bin\x64\Debug\App.xaml">
+      <PackagePath>App.xaml</PackagePath>
+      <Modified>2012-02-28T14:18:57.759</Modified>
+    </AppXPackagedFile>
+    <AppXPackagedFile Include="C:\Users\pankajk81\source\WinApp\WinApp\bin\x64\Debug\MainPage.xaml">
+      <PackagePath>MainPage.xaml</PackagePath>
+      <Modified>2012-02-28T14:18:57.780</Modified>
+    </AppXPackagedFile>
+    <AppXPackagedFile Include="C:\Users\pankajk81\source\WinApp\WinApp\bin\x64\Debug\resources.pri">
+      <PackagePath>resources.pri</PackagePath>
+      <Modified>2012-02-28T14:28:22.390</Modified>
+    </AppXPackagedFile>
+    <AppXPackagedFile Include="C:\Users\pankajk81\source\WinApp\WinApp\bin\x64\Debug\winapp.exe">
+      <PackagePath>winapp.exe</PackagePath>
+      <Modified>2012-02-28T14:28:22.322</Modified>
+    </AppXPackagedFile>
+    <AppXPackagedFile Include="C:\Users\pankajk81\source\WinApp\WinApp\Images\Logo.png">
+      <PackagePath>Images\Logo.png</PackagePath>
+      <Modified>2012-02-28T14:18:57.615</Modified>
+    </AppXPackagedFile>
+    <AppXPackagedFile Include="C:\Users\pankajk81\source\WinApp\WinApp\Images\SmallLogo.png">
+      <PackagePath>Images\SmallLogo.png</PackagePath>
+      <Modified>2012-02-28T14:18:57.752</Modified>
+    </AppXPackagedFile>
+    <AppXPackagedFile Include="C:\Users\pankajk81\source\WinApp\WinApp\Images\SplashScreen.png">
+      <PackagePath>Images\SplashScreen.png</PackagePath>
+      <Modified>2012-02-28T14:18:57.754</Modified>
+    </AppXPackagedFile>
+    <AppXPackagedFile Include="C:\Users\pankajk81\source\WinApp\WinApp\Images\StoreLogo.png">
+      <PackagePath>Images\StoreLogo.png</PackagePath>
+      <Modified>2012-02-28T14:18:57.755</Modified>
+    </AppXPackagedFile>
+    <AppXPackagedFile Include="C:\Users\pankajk81\source\WinApp\WinApp\obj\x64\Debug\winapp.pdb">
+      <PackagePath>winapp.pdb</PackagePath>
+      <Modified>2012-02-28T14:28:22.300</Modified>
+    </AppXPackagedFile>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
+  <Identity Name="75d02e1b-7de7-40ed-907f-b3c75553b395" Publisher="CN=pankajk81" Version="1.0.0.0" ProcessorArchitecture="x64" />
+  <Properties>
+    <DisplayName>WinApp</DisplayName>
+    <PublisherDisplayName>pankajk81</PublisherDisplayName>
+    <Logo>Images\StoreLogo.png</Logo>
+    <Description>WinApp</Description>
+  </Properties>
+  <Prerequisites>
+    <OSMinVersion>6.2</OSMinVersion>
+    <OSMaxVersionTested>6.2</OSMaxVersionTested>
+  </Prerequisites>
+  <Resources>
+    <Resource Language="en-us" />
+  </Resources>
+  <Applications>
+    <Application Id="App" Executable="winapp.exe" EntryPoint="WinApp.App">
+      <VisualElements DisplayName="WinApp" Logo="Images\Logo.png" SmallLogo="Images\SmallLogo.png" Description="WinApp" ForegroundText="light" BackgroundColor="#222222">
+        <SplashScreen Image="Images\SplashScreen.png" />
+      </VisualElements>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <Capability Name="internetClient" />
+  </Capabilities>
+  <Extensions>
+    <Extension Category="windows.activatableClass.inProcessServer">
+      <InProcessServer>
+        <Path>CLRHost.dll</Path>
+        <ActivatableClass ActivatableClassId="FFMpeg.LangSample" ThreadingModel="both" />
+      </InProcessServer>
+    </Extension>
+  </Extensions>
+</Package>
